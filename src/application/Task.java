@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 public class Task implements Serializable {
     private SimpleStringProperty taskName;
+    private String description;
     private SimpleIntegerProperty taskComplexity;
     private LocalDate startDate;
     private LocalDate endDate;
