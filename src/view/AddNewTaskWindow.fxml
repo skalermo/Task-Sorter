@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="350.0" maxWidth="450.0" minHeight="350.0" minWidth="450.0" prefHeight="350.0" prefWidth="450.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddNewTaskWindowController">
+   <children>
+      <StackPane>
+         <children>
+            <Label alignment="TOP_LEFT" text="Add new Task..." />
+         </children>
+      </StackPane>
+      <Label contentDisplay="RIGHT" graphicTextGap="10.0" text="Task Name">
+         <graphic>
+            <TextField fx:id="taskNameTextField" promptText="My task" />
+         </graphic>
+      </Label>
+      <Label contentDisplay="RIGHT" graphicTextGap="10.0" text="Complexity">
+         <graphic>
+            <Slider fx:id="taskComplexitySlider" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" minorTickCount="0" prefHeight="38.0" prefWidth="314.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
+         </graphic>
+      </Label>
+      <HBox spacing="10.0">
+         <children>
+            <Label contentDisplay="RIGHT" graphicTextGap="10.0" text="Start Date">
+               <graphic>
+                  <TextField fx:id="startDateTextField" disable="true" />
+               </graphic></Label>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="200.0">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <RadioButton mnemonicParsing="false" text="RadioButton" />
+                  <Label text="Label">
+                     <graphic>
+                        <DatePicker fx:id="taskEndDatePicker" />
+                     </graphic>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+               <children>
+                  <RadioButton mnemonicParsing="false" text="RadioButton" />
+                  <TextField />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <StackPane>
+         <children>
+            <Button mnemonicParsing="false" onAction="#applyButtonAction" text="Apply" StackPane.alignment="TOP_RIGHT" />
+         </children>
+      </StackPane>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</VBox>

@@ -3,12 +3,17 @@ package view;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -17,6 +22,9 @@ public class MainWindowController implements Initializable {
 
     // These are for Menu Items
     @FXML private MenuBar menuBar;
+
+    // These are management buttons on the left
+    @FXML private Button addNewTaskButton;
 
     // These are for ScrollPane and InfoLabels
     @FXML private ScrollPane scrollPane;
@@ -71,6 +79,15 @@ public class MainWindowController implements Initializable {
         openFileLabel.setOpacity(1.0);
     }
 
+    public void addNewTaskButtonAction() throws IOException
+    {
+        Stage addNewTaskStage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("AddNewTaskWindow.fxml"));
+        addNewTaskStage.setTitle("Add new Task");
+        addNewTaskStage.setScene(new Scene(root, 450, 350));
+        addNewTaskStage.show();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setCurrentDateLabel();
@@ -83,4 +100,6 @@ public class MainWindowController implements Initializable {
     {
         currentDate.setText(LocalDate.now().toString());
     }
+
+
 }
