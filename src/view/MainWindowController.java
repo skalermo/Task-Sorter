@@ -10,6 +10,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
@@ -21,6 +22,9 @@ public class MainWindowController implements Initializable {
     @FXML private ScrollPane scrollPane;
     @FXML private Label newFileLabel;
     @FXML private Label openFileLabel;
+
+    // This is for InfoLabels on the bottom of the scene
+    @FXML private Label currentDate;
 
 
     /**
@@ -69,5 +73,14 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setCurrentDateLabel();
+    }
+
+    /**
+     * This method sets current date to the Label
+     */
+    private void setCurrentDateLabel()
+    {
+        currentDate.setText(LocalDate.now().toString());
     }
 }
