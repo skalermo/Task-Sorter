@@ -1,16 +1,13 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import application.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -22,6 +19,13 @@ public class MainWindowController implements Initializable {
 
     // These are for Menu Items
     @FXML private MenuBar menuBar;
+
+    // Configure the tableView
+    @FXML private TableView<Task> taskTableView;
+    @FXML private TableColumn<Task, String> taskNameColumn;
+    @FXML private TableColumn<Task, Integer> taskComplexityColumn;
+    @FXML private TableColumn<Task, LocalDate> taskStartDateColumn;
+    @FXML private TableColumn<Task, LocalDate> taskEndDateColumn;
 
     // These are management buttons on the left
     @FXML private Button addNewTaskButton;
@@ -55,12 +59,8 @@ public class MainWindowController implements Initializable {
     {
         if (!scrollPane.isDisabled())
             return;
-        scrollPane.setDisable(false);
-        scrollPane.setOpacity(1.0);
-        newFileLabel.setDisable(true);
-        newFileLabel.setOpacity(0.0);
-        openFileLabel.setDisable(true);
-        openFileLabel.setOpacity(0.0);
+        changeTableViewAndLabelsVisibility();
+        addNewTaskButton.setDisable(false);
     }
 
     /**
@@ -71,12 +71,8 @@ public class MainWindowController implements Initializable {
     {
         if (scrollPane.isDisabled())
             return;
-        scrollPane.setDisable(true);
-        scrollPane.setOpacity(0.0);
-        newFileLabel.setDisable(false);
-        newFileLabel.setOpacity(1.0);
-        openFileLabel.setDisable(false);
-        openFileLabel.setOpacity(1.0);
+        changeTableViewAndLabelsVisibility();
+        addNewTaskButton.setDisable(true);
     }
 
     public void addNewTaskButtonAction() throws IOException
@@ -91,6 +87,13 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setCurrentDateLabel();
+
+        // Set up the columns in the table
+        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("Task Name"));
+        taskComplexityColumn.setCellValueFactory(new PropertyValueFactory<>("Complexity"));
+        taskStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("Start Date"));
+        taskEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("Due to Date"));
+
     }
 
     /**
@@ -101,5 +104,14 @@ public class MainWindowController implements Initializable {
         currentDate.setText(LocalDate.now().toString());
     }
 
+    private void changeTableViewAndLabelsVisibility()
+    {
+        scrollPane.setDisable(!scrollPane.isDisabled());
+        scrollPane.setOpacity(1.0 - scrollPane.getOpacity());
+        newFileLabel.setDisable(!newFileLabel.isDisabled());
+        newFileLabel.setOpacity(1.0 - newFileLabel.getOpacity());
+        openFileLabel.setDisable(!openFileLabel.isDisabled());
+        openFileLabel.setOpacity(1.0 - openFileLabel.getOpacity());
+    }
 
 }

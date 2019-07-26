@@ -40,7 +40,7 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <RadioButton mnemonicParsing="false" text="RadioButton" />
+                  <RadioButton mnemonicParsing="false" text="Due to Date" />
                   <Label text="Label">
                      <graphic>
                         <DatePicker fx:id="taskEndDatePicker" />
@@ -50,7 +50,7 @@
             </VBox>
             <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
-                  <RadioButton mnemonicParsing="false" text="RadioButton" />
+                  <RadioButton mnemonicParsing="false" text="Duration" />
                   <TextField />
                </children>
             </VBox>
