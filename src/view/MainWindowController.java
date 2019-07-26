@@ -1,6 +1,8 @@
 package view;
 
 import application.Task;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -40,6 +42,24 @@ public class MainWindowController implements Initializable {
 
 
     /**
+     * This method sets current date to the Label
+     */
+    private void setCurrentDateLabel()
+    {
+        currentDate.setText(LocalDate.now().toString());
+    }
+
+    private void changeTableViewAndLabelsVisibility()
+    {
+        scrollPane.setDisable(!scrollPane.isDisabled());
+        scrollPane.setOpacity(1.0 - scrollPane.getOpacity());
+        newFileLabel.setDisable(!newFileLabel.isDisabled());
+        newFileLabel.setOpacity(1.0 - newFileLabel.getOpacity());
+        openFileLabel.setDisable(!openFileLabel.isDisabled());
+        openFileLabel.setOpacity(1.0 - openFileLabel.getOpacity());
+    }
+
+    /**
      * This method closes the stage
      */
     public void quitMenuItemAction()
@@ -75,13 +95,24 @@ public class MainWindowController implements Initializable {
         addNewTaskButton.setDisable(true);
     }
 
+    /**
+     * This method creates new Stage
+     * where one can create a task;
+     * Also passes this controller to the new one
+     * which provides ability to pass data between them
+     */
     public void addNewTaskButtonAction() throws IOException
     {
         Stage addNewTaskStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("AddNewTaskWindow.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddNewTaskWindow.fxml"));
+        Parent root = loader.load();
         addNewTaskStage.setTitle("Add new Task");
         addNewTaskStage.setScene(new Scene(root, 450, 350));
         addNewTaskStage.show();
+
+        // Passing this controller to the new one
+        AddNewTaskWindowController controller = loader.getController();
+        controller.setPrimaryController(this);
     }
 
     @Override
@@ -89,29 +120,19 @@ public class MainWindowController implements Initializable {
         setCurrentDateLabel();
 
         // Set up the columns in the table
-        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("Task Name"));
-        taskComplexityColumn.setCellValueFactory(new PropertyValueFactory<>("Complexity"));
-        taskStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("Start Date"));
-        taskEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("Due to Date"));
-
+        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("taskName"));
+        taskComplexityColumn.setCellValueFactory(new PropertyValueFactory<>("taskComplexity"));
+        taskStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        taskEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
     }
 
     /**
-     * This method sets current date to the Label
+     * This method gets created Task
+     * then stores it into the TableView
      */
-    private void setCurrentDateLabel()
+    void setNewTask(Task newTask)
     {
-        currentDate.setText(LocalDate.now().toString());
-    }
-
-    private void changeTableViewAndLabelsVisibility()
-    {
-        scrollPane.setDisable(!scrollPane.isDisabled());
-        scrollPane.setOpacity(1.0 - scrollPane.getOpacity());
-        newFileLabel.setDisable(!newFileLabel.isDisabled());
-        newFileLabel.setOpacity(1.0 - newFileLabel.getOpacity());
-        openFileLabel.setDisable(!openFileLabel.isDisabled());
-        openFileLabel.setOpacity(1.0 - openFileLabel.getOpacity());
+        taskTableView.getItems().add(newTask);
     }
 
 }

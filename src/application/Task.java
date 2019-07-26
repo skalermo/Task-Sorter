@@ -20,6 +20,9 @@ public class Task implements Serializable {
         this.endDate = endDate;
     }
 
+    // Some of the getters and setters are used by JavaFX
+    // Do not edit
+
     public String getTaskName() {
         return taskName.get();
     }
@@ -30,6 +33,14 @@ public class Task implements Serializable {
 
     public void setTaskName(String taskName) {
         this.taskName.set(taskName);
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getTaskComplexity() {
