@@ -1,11 +1,15 @@
 package view;
 
+import application.IOManager;
 import application.Task;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,9 +19,17 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
+
+    // This is IOManager instance, allows operations with files
+    private IOManager ioManager;
+
+    // This is list which contains all tasks
+    private List<Task> taskList;
 
     // These are for Menu Items
     @FXML private MenuBar menuBar;
@@ -95,6 +107,11 @@ public class MainWindowController implements Initializable {
         addNewTaskButton.setDisable(true);
     }
 
+    public void saveAsMenuItemAction()
+    {
+        ioManager.saveAs((Stage)menuBar.getScene().getWindow(), taskList);
+    }
+
     /**
      * This method creates new Stage
      * where one can create a task;
@@ -117,6 +134,8 @@ public class MainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ioManager = new IOManager();
+        taskList = new ArrayList<>();
         setCurrentDateLabel();
 
         // Set up the columns in the table
@@ -128,10 +147,11 @@ public class MainWindowController implements Initializable {
 
     /**
      * This method gets created Task
-     * then stores it into the TableView
+     * then stores it into the taskList and the TableView
      */
     void storeNewTask(Task newTask)
     {
+        taskList.add(newTask);
         taskTableView.getItems().add(newTask);
     }
 

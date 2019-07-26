@@ -20,6 +20,11 @@ public class IOManager {
     }
 
 
+    /**
+     * This method saves data to a chosen file
+     * @param stage Is where saveDialog pops up
+     * @param taskList Data to be saved
+     */
     public void saveAs(Stage stage, List<Task> taskList) {
 
         DataContainer container = new DataContainer(taskList);
