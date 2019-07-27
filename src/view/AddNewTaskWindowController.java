@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -24,6 +25,7 @@ public class AddNewTaskWindowController implements Initializable {
     @FXML private Slider taskComplexitySlider;
     @FXML private TextField startDateTextField;
     @FXML private DatePicker taskEndDatePicker;
+    @FXML private TextField durationTextField;
 
     /**
      * This method gets data from fields
@@ -53,6 +55,33 @@ public class AddNewTaskWindowController implements Initializable {
 
         }
 
+    }
+
+    /**
+     * When in the text field number entered
+     * the value of datePicker changes respectively
+     */
+    public void durationTextFieldOnKeyPressed()
+    {
+        int duration;
+        try {
+            duration = Integer.parseInt(durationTextField.getText());
+            if (duration < 0)
+                throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            //todo Print message or something to print non-negative numbers only
+            return;
+        }
+        taskEndDatePicker.setValue(LocalDate.now().plusDays(duration));
+    }
+
+    /**
+     * When date picked in datePicker
+     * the value of the durationTextField changes respectively
+     */
+    public void endDatePickerOnAction()
+    {
+        durationTextField.setText(Integer.toString((int)Duration.between(LocalDate.now().atStartOfDay(), taskEndDatePicker.getValue().atStartOfDay()).toDays()));
     }
 
     @Override

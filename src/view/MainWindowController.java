@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +18,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+//todo Add column Days left to TableView
+//todo Allow task sorting in TableView by parameters
 
 public class MainWindowController implements Initializable {
 
@@ -137,8 +141,9 @@ public class MainWindowController implements Initializable {
     /**
      * This method creates new Stage
      * where one can create a task;
-     * Also passes this controller to the new one
-     * which provides ability to pass data between them
+     * passes this controller to the new one
+     * which provides ability to pass data between them;
+     * adds key listeners to the new Stage's scene
      */
     public void addNewTaskButtonAction() throws IOException
     {
@@ -152,6 +157,12 @@ public class MainWindowController implements Initializable {
         // Passing this controller to the new one
         AddNewTaskWindowController controller = loader.getController();
         controller.setPrimaryController(this);
+
+        // Adding key listener
+        addNewTaskStage.getScene().setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode() == KeyCode.ESCAPE)
+                addNewTaskStage.close();
+        });
     }
 
     @Override
