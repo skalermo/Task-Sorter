@@ -4,7 +4,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.List;
 
 public class IOManager {
     private FileChooser fileChooser;
@@ -24,11 +23,10 @@ public class IOManager {
     /**
      * This method saves data to a chosen file
      * @param stage Is where saveDialog pops up
-     * @param taskList Data to be saved
+     * @param dataContainer Data to be saved
      */
-    public void saveAs(Stage stage, List<Task> taskList) {
+    public void saveAs(Stage stage, DataContainer dataContainer) {
 
-        DataContainer container = new DataContainer(taskList);
         fileChooser.setTitle("Save in");
 
         File file = fileChooser.showSaveDialog(stage);
@@ -37,7 +35,7 @@ public class IOManager {
 
             FileOutputStream fos = new FileOutputStream(file);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(container);
+            oos.writeObject(dataContainer);
             oos.close();
 
         } catch (IOException e) {
@@ -52,16 +50,16 @@ public class IOManager {
      * @param stage is where saveDialog pops up
      * @return if success returns list of tasks, otherwise null
      */
-    public List<Task> open(Stage stage) {
+    public DataContainer open(Stage stage) {
         fileChooser.setTitle("Load from");
         File file = fileChooser.showOpenDialog(stage);
         try {
 
             FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis);
-            DataContainer container = (DataContainer) ois.readObject();
+            DataContainer dataContainer = (DataContainer) ois.readObject();
             ois.close();
-            return container.getTaskList();
+            return dataContainer;
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package view;
 
+import application.DataContainer;
 import application.IOManager;
 import application.Task;
 import javafx.fxml.FXML;
@@ -15,18 +16,16 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
 
-    // todo Wrap all used data in DataContainer
-
     // This is IOManager instance, allows operations with files
     private IOManager ioManager;
 
-    // This is list which contains all tasks
-    private List<Task> taskList;
+    // This object contains all required information about tasks
+    // and other stuff too
+    private DataContainer dataContainer;
 
     // These are for Menu Items
     @FXML private MenuBar menuBar;
@@ -109,7 +108,8 @@ public class MainWindowController implements Initializable {
      */
     public void saveAsMenuItemAction()
     {
-        ioManager.saveAs((Stage)menuBar.getScene().getWindow(), taskList);
+        dataContainer.setLastSaveDate(LocalDate.now());
+        ioManager.saveAs((Stage)menuBar.getScene().getWindow(), dataContainer);
     }
 
     /**
@@ -118,19 +118,20 @@ public class MainWindowController implements Initializable {
      */
     public void openMenuItemAction()
     {
-        taskList = ioManager.open((Stage)menuBar.getScene().getWindow());
-        if (taskList == null)
+        // todo To check if dataContainer is null (otherwise some important data may be lost)
+        dataContainer = ioManager.open((Stage)menuBar.getScene().getWindow());
+        if (dataContainer == null)
             return;
 
-        // todo Add check if today == day when file was saved last time
-        // Updates priorities
-        for (Task task : taskList)
-            task.calcPriority();
+        // Updates priorities if last saveTime was not today
+        if (!dataContainer.getLastSaveDate().isEqual(LocalDate.now()))
+            for (Task task : dataContainer.getTaskList())
+                task.calcPriority();
 
         changeTableViewAndLabelsVisibility();
         addNewTaskButton.setDisable(false);
         taskTableView.getItems().clear();
-        taskTableView.getItems().addAll(taskList);
+        taskTableView.getItems().addAll(dataContainer.getTaskList());
     }
 
     /**
@@ -156,7 +157,7 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ioManager = new IOManager();
-        taskList = new ArrayList<>();
+        dataContainer = new DataContainer(new ArrayList<>());
         setCurrentDateLabel();
 
         // Set up the columns in the table
@@ -172,7 +173,7 @@ public class MainWindowController implements Initializable {
      */
     void storeNewTask(Task newTask)
     {
-        taskList.add(newTask);
+        dataContainer.getTaskList().add(newTask);
         taskTableView.getItems().add(newTask);
     }
 

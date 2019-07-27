@@ -57,7 +57,7 @@ public class Task implements Serializable {
     public void calcPriority()
     {
         // Days between endDate and today
-        int dayDifference = (int)Duration.between(endDate, LocalDate.now()).toDays();
+        int dayDifference = (int)Duration.between(endDate.atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
 
         priority = (double)dayDifference / taskComplexity.get();
     }

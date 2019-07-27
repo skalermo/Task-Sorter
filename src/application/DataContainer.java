@@ -1,16 +1,30 @@
 package application;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 
-class DataContainer implements Serializable {
+public class DataContainer implements Serializable {
     private List<Task> taskList;
+    private LocalDate lastSaveDate;
 
-    DataContainer(List<Task> taskList) {
+    public DataContainer(List<Task> taskList) {
         this.taskList = taskList;
     }
 
-    List<Task> getTaskList() {
+    public List<Task> getTaskList() {
         return taskList;
+    }
+
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
+    }
+
+    public LocalDate getLastSaveDate() {
+        return lastSaveDate;
+    }
+
+    public void setLastSaveDate(LocalDate lastSaveDate) {
+        this.lastSaveDate = lastSaveDate;
     }
 }
