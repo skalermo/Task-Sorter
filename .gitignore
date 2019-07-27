@@ -1,7 +1,7 @@
 # Don't track these folders
 .idea/
 out/
-data/
+.data/
 
 # Files
 Task\ Sorter.iml

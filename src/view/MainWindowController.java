@@ -2,14 +2,9 @@ package view;
 
 import application.IOManager;
 import application.Task;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,6 +19,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainWindowController implements Initializable {
+
+    // todo Wrap all used data in DataContainer
 
     // This is IOManager instance, allows operations with files
     private IOManager ioManager;
@@ -107,9 +104,33 @@ public class MainWindowController implements Initializable {
         addNewTaskButton.setDisable(true);
     }
 
+    /**
+     * This method saves list of tasks using the stage and ioManager
+     */
     public void saveAsMenuItemAction()
     {
         ioManager.saveAs((Stage)menuBar.getScene().getWindow(), taskList);
+    }
+
+    /**
+     * This method loads list of tasks
+     * and if necessary enables scrollPane with tableView
+     */
+    public void openMenuItemAction()
+    {
+        taskList = ioManager.open((Stage)menuBar.getScene().getWindow());
+        if (taskList == null)
+            return;
+
+        // todo Add check if today == day when file was saved last time
+        // Updates priorities
+        for (Task task : taskList)
+            task.calcPriority();
+
+        changeTableViewAndLabelsVisibility();
+        addNewTaskButton.setDisable(false);
+        taskTableView.getItems().clear();
+        taskTableView.getItems().addAll(taskList);
     }
 
     /**

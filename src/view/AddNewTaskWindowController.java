@@ -37,7 +37,9 @@ public class AddNewTaskWindowController implements Initializable {
         String taskName = taskNameTextField.getText();
         int complexity = (int)taskComplexitySlider.getValue();
         LocalDate taskEndDate = taskEndDatePicker.getValue();
-        if (taskName != null && complexity != 0 && taskEndDate != null)
+        if (taskEndDate.isBefore(LocalDate.now()))
+            return;
+        if (taskName != null && complexity != 0)
             newTask = new Task(taskName, complexity, LocalDate.now(), taskEndDate);
 
         if (newTask != null) {
