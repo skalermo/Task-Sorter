@@ -30,7 +30,7 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+            <VBox prefHeight="200.0" prefWidth="150.0" spacing="10.0">
                <children>
                   <Label text="Due to Date" />
                   <DatePicker fx:id="taskEndDatePicker" editable="false" onAction="#endDatePickerOnAction" showWeekNumbers="true" />
@@ -46,7 +46,7 @@
       </HBox>
       <StackPane>
          <children>
-            <Button mnemonicParsing="false" onAction="#applyButtonAction" text="Apply" StackPane.alignment="TOP_RIGHT" />
+            <Button fx:id="applyButton" mnemonicParsing="false" onAction="#applyButtonAction" text="Apply" StackPane.alignment="TOP_RIGHT" />
          </children>
       </StackPane>
    </children>

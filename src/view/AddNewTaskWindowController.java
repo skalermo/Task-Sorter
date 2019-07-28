@@ -1,10 +1,9 @@
 package view;
 
 import application.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -20,6 +19,9 @@ public class AddNewTaskWindowController implements Initializable {
     // Instance of primary controller for passing data to it
     private MainWindowController mainWindowController;
 
+    // This is applyButton
+    @FXML private Button applyButton;
+
     // These are for task's infos
     @FXML private TextField taskNameTextField;
     @FXML private Slider taskComplexitySlider;
@@ -33,7 +35,7 @@ public class AddNewTaskWindowController implements Initializable {
      * then if input is valid passes it to primary controller
      * and closes the stage
      */
-    public void applyButtonAction(ActionEvent event)
+    public void applyButtonAction()
     {
         Task newTask = null;
         String taskName = taskNameTextField.getText();
@@ -48,8 +50,8 @@ public class AddNewTaskWindowController implements Initializable {
             mainWindowController.storeNewTask(newTask);
 
             // Get a handle to this stage
-            Node source = (Node)event.getSource();
-            Stage thisStage = (Stage)source.getScene().getWindow();
+            Stage thisStage = (Stage)applyButton.getScene().getWindow();
+
             // Close the stage
             thisStage.close();
 
@@ -63,16 +65,25 @@ public class AddNewTaskWindowController implements Initializable {
      */
     public void durationTextFieldOnKeyPressed()
     {
+        if (durationTextField.getText().equals(""))
+            return;
         int duration;
         try {
             duration = Integer.parseInt(durationTextField.getText());
-            if (duration < 0)
+            if (duration < 0 || Integer.toString(duration).length() > 5)
                 throw new NumberFormatException();
         } catch (NumberFormatException e) {
             //todo Print message or something to print non-negative numbers only
+            e.printStackTrace();
             return;
         }
+
+        // Set date in the datePicker respectively to the duration
         taskEndDatePicker.setValue(LocalDate.now().plusDays(duration));
+
+        // Move caret to the end of the field
+        durationTextField.positionCaret(durationTextField.getLength());
+
     }
 
     /**
