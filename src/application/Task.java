@@ -1,5 +1,6 @@
 package application;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -16,7 +17,8 @@ public class Task implements Serializable {
     private SimpleIntegerProperty taskComplexity;
     private LocalDate startDate;
     private LocalDate endDate;
-    private transient double priority;
+    private transient SimpleDoubleProperty priority;
+    private transient SimpleIntegerProperty daysLeft;
 
     /**
      * Implemented method, ensures correct writing to file
@@ -57,14 +59,14 @@ public class Task implements Serializable {
     public void calcPriority()
     {
         // Days between endDate and today
-        int dayDifference = (int)Duration.between(endDate.atStartOfDay(), LocalDate.now().atStartOfDay()).toDays();
+        daysLeft = new SimpleIntegerProperty((int)Duration.between(LocalDate.now().atStartOfDay(), endDate.atStartOfDay()).toDays());
 
-        priority = (double)dayDifference / taskComplexity.get();
+        priority = new SimpleDoubleProperty((double)daysLeft.get() / taskComplexity.get());
     }
+
 
     // Some of the getters and setters are used by JavaFX
     // Do not edit
-
     public String getTaskName() {
         return taskName.get();
     }
@@ -111,5 +113,29 @@ public class Task implements Serializable {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public double getPriority() {
+        return priority.get();
+    }
+
+    public void setPriority(double priority) {
+        this.priority.set(priority);
+    }
+
+    public SimpleDoubleProperty priorityProperty() {
+        return priority;
+    }
+
+    public int getDaysLeft() {
+        return daysLeft.get();
+    }
+
+    public void setDaysLeft(int daysLeft) {
+        this.daysLeft.set(daysLeft);
+    }
+
+    public SimpleIntegerProperty daysLeftProperty() {
+        return daysLeft;
     }
 }

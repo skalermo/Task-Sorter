@@ -11,16 +11,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-//todo Add column Days left to TableView
-//todo Allow task sorting in TableView by parameters
 
 public class MainWindowController implements Initializable {
 
@@ -36,18 +34,22 @@ public class MainWindowController implements Initializable {
 
     // Configure the tableView
     @FXML private TableView<Task> taskTableView;
+    @FXML private TableColumn<Task, Double> taskPriorityColumn;
     @FXML private TableColumn<Task, String> taskNameColumn;
     @FXML private TableColumn<Task, Integer> taskComplexityColumn;
+    @FXML private TableColumn<Task, Integer> daysLeftColumn;
     @FXML private TableColumn<Task, LocalDate> taskStartDateColumn;
     @FXML private TableColumn<Task, LocalDate> taskEndDateColumn;
 
-    // These are management buttons on the left
+    // These are management elements on the left
+    @FXML private VBox buttonsVBox;
     @FXML private Button addNewTaskButton;
 
-    // These are for ScrollPane and InfoLabels
+    // These are elements of StackPane
     @FXML private ScrollPane scrollPane;
     @FXML private Label newFileLabel;
     @FXML private Label openFileLabel;
+    @FXML private StackPane stackPane;
 
     // This is for InfoLabels on the bottom of the scene
     @FXML private Label currentDate;
@@ -168,12 +170,16 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ioManager = new IOManager();
-        dataContainer = new DataContainer(new ArrayList<>());
+        dataContainer = new DataContainer();
+
         setCurrentDateLabel();
 
         // Set up the columns in the table
+
+        taskPriorityColumn.setCellValueFactory(new PropertyValueFactory<>("priority"));
         taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("taskName"));
         taskComplexityColumn.setCellValueFactory(new PropertyValueFactory<>("taskComplexity"));
+        daysLeftColumn.setCellValueFactory(new PropertyValueFactory<>("daysLeft"));
         taskStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         taskEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
     }
